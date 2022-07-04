@@ -9,9 +9,18 @@ if($_POST){
     }else{
         $max =$Thirdnumber;
     }
-
     }
+    $min= $_POST['firtsNumber'];
+    if( $Secondnumber < $min || $Thirdnumber < $min){
+        if($Secondnumber < $Thirdnumber){
+        $min = $Secondnumber;
+    }else{
+        $min =$Thirdnumber;
+    }
+    
 
+  }
+  $message = "The max number is : {$max} , The mini number is : {$min}";
 }
 ?>
 <!doctype html>
@@ -46,10 +55,10 @@ if($_POST){
                       <input type="number" name="thirdNumber" id="" class="form-control" placeholder="" aria-describedby="helpId">
                     </div>
                     <div class="form-group offset-4">
-                      <button class="btn btn-info">GET MAX Number</button>
+                      <button class="btn btn-info">GET MAX and MIN Number</button>
                     </div>
                     <div class="alert alert-info">
-                         MAX Number IS : <?= $max ?? " " ?>
+                         <?= $message ?? " " ?>
                     </div>
 
                 </form>
