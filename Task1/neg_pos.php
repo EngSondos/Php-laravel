@@ -1,9 +1,16 @@
 <?php 
 if($_POST){
- if($_POST['Number'] < 0)
-    $Sign = "negative";
-else
-    $Sign = "positive";
+    if(empty($_POST['Number'])){
+        $message ="Invalid Data";
+    }else{
+        $message ="The Sign is ";
+        if($_POST['Number'] < 0)
+        $message .= "negative";
+    else
+        $message .= "positive";
+
+    }
+
 
 
    
@@ -44,7 +51,7 @@ else
                     </div>
                    
                     <div class="alert alert-info">
-                        The Sign is  : <?= $Sign ?? " " ?>
+                          <?= $message ?? "" ?>
                     </div>
 
                 </form>

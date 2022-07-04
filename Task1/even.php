@@ -1,9 +1,16 @@
 <?php 
 if($_POST){
- if($_POST['Number'] %2 == 0)
-    $EvenOROdd = "Even";
-else
-$EvenOROdd = "Odd";
+    if(empty($_POST['Number'])){
+        $EvenOROdd ="Invalid Data";
+    }else{
+        $EvenOROdd="This Number is ";
+    if($_POST['Number'] %2 == 0)
+        $EvenOROdd .= "Even";
+    else
+    $EvenOROdd .= "Odd";
+
+    }
+
 
 
    
@@ -44,7 +51,7 @@ $EvenOROdd = "Odd";
                     </div>
 
                     <div class="alert alert-info">
-                        This number is : <?=  $EvenOROdd ?? " " ?>
+                         <?= $EvenOROdd ?? " " ?>
                     </div>
 
                 </form>

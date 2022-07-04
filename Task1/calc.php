@@ -3,19 +3,26 @@ if($_POST){
     $firstNumber= $_POST['firtsNumber'];
     $secondNumber = $_POST['secondNumber'];
     $operator = $_POST['operator'];
-    if($operator== "+"){
-        $result= $firstNumber +$secondNumber;
-    }elseif($operator== "-"){
-        $result= $firstNumber -$secondNumber;
-}elseif($operator== "*"){
-    $result= $firstNumber *$secondNumber;
-}elseif($operator== "/"){
-    $result= $firstNumber /$secondNumber;
-}elseif($operator== "%"){
-    $result= $firstNumber %$secondNumber;
-}elseif($operator== "**"){
-    $result= $firstNumber **$secondNumber;
-}
+    if(empty($firstNumber)|| empty($secondNumber)||empty($operator)){
+        $result ="Invalid Data";
+    }else {
+        $result ="Result: ";
+        if($operator== "+"){
+            $result .= $firstNumber +$secondNumber;
+        }elseif($operator== "-"){
+            $result .= $firstNumber -$secondNumber;
+    }elseif($operator== "*"){
+        $result .= $firstNumber * $secondNumber;
+    }elseif($operator== "/"){
+        $result .= $firstNumber /$secondNumber;
+    }elseif($operator== "%"){
+        $result .= $firstNumber %$secondNumber;
+    }elseif($operator== "**"){
+        $result .= $firstNumber **$secondNumber;
+    }
+
+    }
+
 }
 ?>
 
@@ -54,31 +61,31 @@ if($_POST){
                     <div class="form-group">
                         <div class="row ">
                             <div class="col-2">
-                            <button class="btn btn-info " name="operator" value="+">+</button>
+                                <button class="btn btn-info " name="operator" value="+">+</button>
                             </div>
                             <div class="col-2">
-                            <button class="btn btn-info" name="operator" value="-">-</button>
+                                <button class="btn btn-info" name="operator" value="-">-</button>
                             </div>
                             <div class="col-2">
-                            <button class="btn btn-info" name="operator" value="*">*</button>
+                                <button class="btn btn-info" name="operator" value="*">*</button>
                             </div>
                             <div class="col-2">
-                            <button class="btn btn-info " name="operator" value="/">/</button>
+                                <button class="btn btn-info " name="operator" value="/">/</button>
                             </div>
                             <div class="col-2">
-                            <button class="btn btn-info "name="operator" value="%">%</button>
+                                <button class="btn btn-info " name="operator" value="%">%</button>
                             </div>
                             <div class="col-2">
-                            <button class="btn btn-info " name="operator" value="**">**</button>
+                                <button class="btn btn-info " name="operator" value="**">**</button>
                             </div>
-                           
+
 
                         </div>
                     </div>
 
-                  
+
                     <div class="alert alert-info">
-                        Result : <?= $result ?? " " ?>
+                         <?= $result ?? " " ?>
                     </div>
 
                 </form>
