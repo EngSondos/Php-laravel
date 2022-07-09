@@ -19,7 +19,7 @@ $users = [
             "school" => 'drawing',
             'home' => 'painting'
         ],
-      
+
 
     ],
     (object)[
@@ -35,7 +35,7 @@ $users = [
             "school" => 'painting',
             'home' => 'drawing'
         ],
-       
+
 
     ],
     (object)[
@@ -51,18 +51,19 @@ $users = [
             "school" => 'painting',
             'home' => 'drawing'
         ],
-        
-        
+
+
 
     ],
-    
-    
+
+
 
 ]; ?>
 
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Title</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -70,54 +71,56 @@ $users = [
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="containar">
-    <table class="table table-striped mt-3">
-        <tr>
-            
-        <?php 
-        foreach($users[0] as $tablehead=> $user){ ?> 
-        <th>
-            <?= $tablehead;?>
-        
-            </th>
-        <?php }?>
-        <tr>
-        <?php
-        foreach ($users as $user) { ?>
+        <table class="table table-striped mt-3">
             <tr>
-     <?php
-         foreach ($user as $property => $clientdata) {
-             if (gettype($clientdata) == "object" || gettype($clientdata) == "array") { ?>
-             <td>
-           <?php foreach ($clientdata as $pos => $data) {                
-                if($pos == "gender"){
-                    if($data =="m"){
-                        echo"male";
-    
-                    }else{
-                        echo"female";
+
+                <?php
+                foreach ($users[0] as $tablehead => $user) { ?>
+                    <th>
+                        <?= $tablehead; ?>
+
+                    </th>
+                <?php } ?>
+            <tr>
+                <?php
+                foreach ($users as $user) { ?>
+            <tr>
+                <?php
+                    foreach ($user as $property => $clientdata) {
+                        if (gettype($clientdata) == "object" || gettype($clientdata) == "array") { ?>
+                        <td>
+                            <?php foreach ($clientdata as $pos => $data) {
+                                if ($pos == "gender") {
+                                    if ($data == "m") {
+                                        echo "male";
+                                    } else {
+                                        echo "female";
+                                    }
+                                } else {
+                                    echo $data . "<br>";
+                                }
+                            } ?>
+                        </td>
+                    <?php } else { ?>
+                        <td> <?= $clientdata ?>
+                        </td>
+            <?php }
                     }
-                }else{
-                echo $data ."<br>"; 
-            }
-        }?>
-            </td>
-       <?php } else { ?>
-        <td> <?= $clientdata?>
-        </td>
-        <?php }
-    }}
-    ?> 
-    </tr>
-   </table>
+                }
+            ?>
+            </tr>
+        </table>
     </div>
-      
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+</body>
+
 </html>

@@ -19,7 +19,7 @@ $users = [
             "school" => 'drawing',
             'home' => 'painting'
         ],
-      
+
 
     ],
     (object)[
@@ -35,7 +35,7 @@ $users = [
             "school" => 'painting',
             'home' => 'drawing'
         ],
-       
+
 
     ],
     (object)[
@@ -53,13 +53,13 @@ $users = [
         ],
 
     ],
-    
+
 
 ];
 $table = "<Table style ='border-bottom: 1px solid black; width :50% ;text-align:center; margin:auto;margin-top:40px;'> ";
 $table .= "<tr style ='border-bottom: 1px solid black;'>";
-foreach($users[0] as $tablehead=> $user){ // for table header
-    $table .="<th style ='border-bottom: 1px solid black; padding: 5px;'>{$tablehead}</th>";
+foreach ($users[0] as $tablehead => $user) { // for table header
+    $table .= "<th style ='border-bottom: 1px solid black; padding: 5px;'>{$tablehead}</th>";
 }
 // start body of table
 foreach ($users as $user) {
@@ -67,26 +67,24 @@ foreach ($users as $user) {
 
 
     foreach ($user as $property => $clientdata) {
-        if (gettype($clientdata) == "object" || gettype($clientdata) == "array") { 
+        if (gettype($clientdata) == "object" || gettype($clientdata) == "array") {
             $table .= "<td style ='border-bottom: 1px solid black;padding: 5px;'>";
-            foreach ($clientdata as $pos => $data) {                
-                if($pos == "gender"){
-                    if($data =="m"){
-                        $table .="male";
-    
-                    }else{
-                        $table .="female";
+            foreach ($clientdata as $pos => $data) {
+                if ($pos == "gender") {
+                    if ($data == "m") {
+                        $table .= "male";
+                    } else {
+                        $table .= "female";
                     }
-                }else{
-                $table .= $data ."<br>"; 
+                } else {
+                    $table .= $data . "<br>";
+                }
             }
-        }
             $table .= " </td>";
         } else {
             $table .= "<td style ='border-bottom: 1px solid black;padding: 5px;'> {$clientdata} </td>";
         }
     }
-   
 }
 
 
