@@ -40,24 +40,9 @@ include_once("layout/header.php");
                     // print_r($_POST);
                     // $_SESSION['firstRequest']=[$_POST['name'],$_POST['citys'] , $_POST['numberofproducts']] ?? "";
                     $NumberOfProduct = $_POST['first']['numberofproducts'] ?? 0;
-                    $count = 0;
-                    // print_r($_SESSION);
                     //call function 
                     if (isset($_POST['first'])) {
-
-                        foreach ($_POST['first'] as $key => $name) {
-                            print_r($key . "" . $name);
-                        }
-                    } else {
-                    }
-                    foreach ($_POST['first'] as $index => $clientinfo) {
-                        if (empty($_POST['first'][$index])) {
-                            $count++;
-                        }
-                    }
-                    // echo $count;
-                    if ($count == 0) {
-                        if (isset($_POST['first'])) {
+                        if (validation($_POST['first'])) {
                             if (!isset($_POST['second'])) { ?>
                                 <table class="table table-striped table-inverse table-responsive">
                                     <thead class="thead-inverse">
@@ -105,116 +90,122 @@ include_once("layout/header.php");
 
 
 
-                            <?php
+                                <?php
 
-                            } else { ?>
-                                <table class="table table-striped table-inverse table-responsive">
-                                    <thead class="thead-inverse">
-                                        <tr>
-                                            <th class="text-info text-center">No.</th>
-                                            <th class="text-info text-center">Product Name</th>
-                                            <th class="text-info text-center">Price</th>
-                                            <th class="text-info text-center">Quantittes</th>
-                                            <th class="text-info text-center">Sub Total</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <?php
-                                        $i = 0;
-                                        $Totalprice=0;
-                                        while ($i < $NumberOfProduct) {
-                                        ?>
-
+                            } else {
+                                if (validation($_POST['second']['pname']) && validation($_POST['second']['price'])&& validation($_POST['second']['q'])) { ?>
+                                    <table class="table table-striped table-inverse table-responsive">
+                                        <thead class="thead-inverse">
                                             <tr>
-                                                <td><?= $i ?></td>
-                                                <td>
-                                                    <?= $_POST['second']['pname'][$i] ?? "" ?>
-                                                </td>
-                                                <td>
-                                                    <?= $_POST['second']['price'][$i] ?? "" ?>
-
-                                                </td>
-                                                <td>
-                                                    <?= $_POST['second']['q'][$i] ?? "" ?>
-                                                </td>
-                                                <td>
-                                                    <?= $_POST['second']['q'][$i] * $_POST['second']['price'][$i]  ?>
-                                                </td>
+                                                <th class="text-info text-center">No.</th>
+                                                <th class="text-info text-center">Product Name</th>
+                                                <th class="text-info text-center">Price</th>
+                                                <th class="text-info text-center">Quantittes</th>
+                                                <th class="text-info text-center">Sub Total</th>
 
                                             </tr>
-                                        <?php
-                                        $Totalprice += $_POST['second']['q'][$i] * $_POST['second']['price'][$i] ;
-                                            $i++;
-                                        }
-                                        ?>
-                                
-                                <tr>
-                                    <td colspan="5" class="text-center h4" >Reicep</td>
-                                </tr>
+                                        </thead>
+                                        <tbody>
 
-                                        <tr >
-                                            <td colspan="3">
-                                                Client Name
-                                            </td>
-                                            <td colspan="2"> <?= $_POST['first']['name'] ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                City
-                                            </td >
-                                            <td colspan="2"><?= $_POST['first']['citys'] ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                Total
-                                            </td>
-                                            <td colspan="2"><?= $Totalprice; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                Discount
-                                            </td>
-                                            <td colspan="2"><?=calculatedescount($Totalprice) ."%"?></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                               Total After Discount
-                                            </td>
-                                            <td colspan="2"><?=$Totalprice - calculatedescount($Totalprice)?></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                               Delivery
-                                            </td>
-                                            <td colspan="2"><?=calculatedelivery($_POST['first']['citys'])?></td>
+                                            <?php
+                                            $i = 0;
+                                            $Totalprice = 0;
+                                            while ($i < $NumberOfProduct) {
+                                            ?>
 
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                               Total Net
-                                            </td>
-                                            <td colspan="2"><?=calculatedelivery($_POST['first']['citys']) + $Totalprice - calculatedescount($Totalprice)?></td>
-                                            
-                                        </tr>
+                                                <tr>
+                                                    <td><?= $i ?></td>
+                                                    <td>
+                                                        <?= $_POST['second']['pname'][$i] ?? "" ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= $_POST['second']['price'][$i] ?? "" ?>
 
-                                    </tbody>
-                                </table>
+                                                    </td>
+                                                    <td>
+                                                        <?= $_POST['second']['q'][$i] ?? "" ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= $_POST['second']['q'][$i] * $_POST['second']['price'][$i]  ?>
+                                                    </td>
+
+                                                </tr>
+                                            <?php
+                                                $Totalprice += $_POST['second']['q'][$i] * $_POST['second']['price'][$i];
+                                                $i++;
+                                            }
+                                            ?>
+
+                                            <tr>
+                                                <td colspan="5" class="text-center h4">Reicep</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="3">
+                                                    Client Name
+                                                </td>
+                                                <td colspan="2"> <?= $_POST['first']['name'] ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    City
+                                                </td>
+                                                <td colspan="2"><?= $_POST['first']['citys'] ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    Total
+                                                </td>
+                                                <td colspan="2"><?= $Totalprice; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    Discount
+                                                </td>
+                                                <td colspan="2"><?= calculatedescount($Totalprice) . "%" ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    Total After Discount
+                                                </td>
+                                                <td colspan="2"><?= $Totalprice - calculatedescount($Totalprice) ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    Delivery
+                                                </td>
+                                                <td colspan="2"><?= calculatedelivery($_POST['first']['citys']) ?></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    Total Net
+                                                </td>
+                                                <td colspan="2"><?= calculatedelivery($_POST['first']['citys']) + $Totalprice - calculatedescount($Totalprice) ?></td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
 
 
+                            <?php     }else{?>
+                                <p class="alert alert-danger"> please enter all information</p>
+
+                   <?php         }
+                            }
+                        } else { ?>
+                            <p class="alert alert-danger"> please enter all information</p>
 
 
-                        <?php }
-                        }
-                    } else { ?>
-                        <button class="alert alert-danger"> please enter all information</button>
 
             </form>
 
-    <?php }
+<?php
+                        }
+                    }
                 }
-    ?>
+?>
 
         </div>
     </div>

@@ -21,23 +21,6 @@ function calculatedelivery($city)
     else
         return 0;
 }
-function calculateProductPrice($products ,$quantite){
-    foreach ($products as $producrname=>$product){
-    }
-}
-// function calculateRecipe()
-// {
-//     foreach($products as $producrname=> $product){
-//         if()
-//     }
-// }
-function customerinfo ($customerinfo){
-    $information=[];
-    foreach($customerinfo as $key=> $customer){
-        $information[$key]=$customer;
-    }
-    return $information;
-}
 function calculateSubTotal($prices,$quantite){
     $subTotal=[];
     foreach ($prices as $index=> $price){
@@ -45,4 +28,13 @@ function calculateSubTotal($prices,$quantite){
     }
     return $subTotal;
 
+}
+function validation($inputs)
+{
+  foreach ($inputs as $input) {
+    if (!$input) {
+      return false;
+    }
+  }
+  return true;
 }
