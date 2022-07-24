@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2022 at 08:59 AM
+-- Generation Time: Jul 24, 2022 at 12:32 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -37,7 +37,7 @@ CREATE TABLE `addresses` (
   `types` tinyint(1) UNSIGNED NOT NULL COMMENT '0=> home 1=>company',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `users_id` bigint(20) UNSIGNED NOT NULL
+  `user_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -50,7 +50,7 @@ CREATE TABLE `admin` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `email_verifition_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `email_verifition_at` timestamp NULL DEFAULT NULL,
   `verifition_code` bigint(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
@@ -80,9 +80,9 @@ CREATE TABLE `brands` (
 --
 
 CREATE TABLE `carts` (
-  `users_id` bigint(20) UNSIGNED NOT NULL,
-  `products_id` bigint(20) UNSIGNED NOT NULL,
-  `quantity` bigint(255) NOT NULL
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -145,8 +145,8 @@ CREATE TABLE `copouns` (
 --
 
 CREATE TABLE `favoirts` (
-  `users_id` bigint(20) UNSIGNED NOT NULL,
-  `products_id` bigint(20) UNSIGNED NOT NULL
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -176,8 +176,8 @@ CREATE TABLE `offers` (
 --
 
 CREATE TABLE `offers_products` (
-  `offers_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `products_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `offer_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `price_after_offer` decimal(10,2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -196,8 +196,8 @@ CREATE TABLE `orders` (
   `status` tinyint(1) NOT NULL COMMENT '0=> Rejected order , 1=>Accepted order , 2=>Delieverd order',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `addresses_id` bigint(20) UNSIGNED NOT NULL,
-  `copouns_id` bigint(20) UNSIGNED NOT NULL
+  `address_id` bigint(20) UNSIGNED NOT NULL,
+  `copoun_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -209,8 +209,8 @@ CREATE TABLE `orders` (
 CREATE TABLE `orders-products` (
   `price` decimal(8,2) UNSIGNED NOT NULL,
   `quantity` bigint(20) UNSIGNED NOT NULL,
-  `orders_id` bigint(20) UNSIGNED NOT NULL,
-  `products_id` bigint(20) UNSIGNED NOT NULL
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -221,18 +221,18 @@ CREATE TABLE `orders-products` (
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name_e` varchar(32) NOT NULL,
+  `name_en` varchar(32) NOT NULL,
   `name_ar` varchar(32) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `quantity` bigint(6) UNSIGNED NOT NULL DEFAULT 1,
+  `quantity` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
   `price` decimal(8,2) UNSIGNED NOT NULL,
   `details_en` varchar(255) NOT NULL,
   `details_ar` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 => not active 1=> active ',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `brands_id` bigint(20) UNSIGNED NOT NULL,
-  `subcategories_id` bigint(20) UNSIGNED NOT NULL
+  `brand_id` bigint(20) UNSIGNED NOT NULL,
+  `subcategory_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -271,8 +271,8 @@ CREATE TABLE `regions` (
 --
 
 CREATE TABLE `reviews` (
-  `users_id` bigint(20) UNSIGNED NOT NULL,
-  `products_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   `rate` tinyint(1) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -320,9 +320,9 @@ CREATE TABLE `users` (
   `phone` varchar(11) NOT NULL,
   `email` varchar(64) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `gender` enum('0','1') NOT NULL COMMENT '0=>male , `=> female',
-  `status` enum('0','1') NOT NULL DEFAULT '0' COMMENT '0=>not active 1=>active',
-  `email_verified_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `gender` tinyint(1) NOT NULL COMMENT '0=>male , 1=> female',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0=>not active 1=>active',
+  `email_verified_at` timestamp NULL DEFAULT NULL,
   `verification_code` int(6) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
@@ -337,7 +337,7 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `addreses_user_fk` (`users_id`);
+  ADD KEY `addreses_user_fk` (`user_id`);
 
 --
 -- Indexes for table `admin`
@@ -356,8 +356,8 @@ ALTER TABLE `brands`
 -- Indexes for table `carts`
 --
 ALTER TABLE `carts`
-  ADD PRIMARY KEY (`users_id`,`products_id`),
-  ADD KEY `product_user_fk` (`products_id`);
+  ADD PRIMARY KEY (`user_id`,`product_id`),
+  ADD KEY `product_user_fk` (`product_id`);
 
 --
 -- Indexes for table `categories`
@@ -382,8 +382,8 @@ ALTER TABLE `copouns`
 -- Indexes for table `favoirts`
 --
 ALTER TABLE `favoirts`
-  ADD PRIMARY KEY (`users_id`,`products_id`),
-  ADD KEY `favoirts_products_fk` (`products_id`);
+  ADD PRIMARY KEY (`user_id`,`product_id`),
+  ADD KEY `favoirts_products_fk` (`product_id`);
 
 --
 -- Indexes for table `offers`
@@ -395,37 +395,37 @@ ALTER TABLE `offers`
 -- Indexes for table `offers_products`
 --
 ALTER TABLE `offers_products`
-  ADD KEY `offers_products_o_fk` (`offers_id`),
-  ADD KEY `products_id` (`products_id`);
+  ADD PRIMARY KEY (`offer_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `orders_copouns_fk` (`copouns_id`),
-  ADD KEY `addresses_orders_fk` (`addresses_id`);
+  ADD KEY `orders_copouns_fk` (`copoun_id`),
+  ADD KEY `addresses_orders_fk` (`address_id`);
 
 --
 -- Indexes for table `orders-products`
 --
 ALTER TABLE `orders-products`
-  ADD KEY `order-products_products_fk` (`products_id`),
-  ADD KEY `orders_products_orders_fk` (`orders_id`);
+  ADD PRIMARY KEY (`order_id`,`product_id`),
+  ADD KEY `order-products_products_fk` (`product_id`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `products_subctegories_fk` (`subcategories_id`),
-  ADD KEY `brands_id` (`brands_id`);
+  ADD KEY `products_subctegories_fk` (`subcategory_id`),
+  ADD KEY `brands_id` (`brand_id`);
 
 --
 -- Indexes for table `products_spaces`
 --
 ALTER TABLE `products_spaces`
-  ADD KEY `products_spaces_s_fk` (`spaces_id`),
+  ADD PRIMARY KEY (`spaces_id`,`products_id`),
   ADD KEY `products_spaces_p_fk` (`products_id`);
 
 --
@@ -440,8 +440,8 @@ ALTER TABLE `regions`
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD PRIMARY KEY (`users_id`,`products_id`),
-  ADD KEY `products` (`products_id`);
+  ADD PRIMARY KEY (`user_id`,`product_id`),
+  ADD KEY `products` (`product_id`);
 
 --
 -- Indexes for table `spaces`
@@ -548,49 +548,49 @@ ALTER TABLE `users`
 -- Constraints for table `addresses`
 --
 ALTER TABLE `addresses`
-  ADD CONSTRAINT `addreses_user_fk` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `addreses_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `carts`
 --
 ALTER TABLE `carts`
-  ADD CONSTRAINT `cart_user_fk` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `product_user_fk` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`);
+  ADD CONSTRAINT `cart_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_user_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
 -- Constraints for table `favoirts`
 --
 ALTER TABLE `favoirts`
-  ADD CONSTRAINT `favoirts_products_fk` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `favoirts_user_fk` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `favoirts_products_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `favoirts_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `offers_products`
 --
 ALTER TABLE `offers_products`
-  ADD CONSTRAINT `offers_products_ibfk_1` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `offers_products_o_fk` FOREIGN KEY (`offers_id`) REFERENCES `offers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `offers_products_ibfk_1` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `offers_products_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `addresses_orders_fk` FOREIGN KEY (`addresses_id`) REFERENCES `addresses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orders_copouns_fk` FOREIGN KEY (`copouns_id`) REFERENCES `copouns` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `addresses_orders_fk` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_copouns_fk` FOREIGN KEY (`copoun_id`) REFERENCES `copouns` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders-products`
 --
 ALTER TABLE `orders-products`
-  ADD CONSTRAINT `order-products_products_fk` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orders_products_orders_fk` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `order-products_products_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_products_orders_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`brands_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `products_subctegories_fk` FOREIGN KEY (`subcategories_id`) REFERENCES `subcategories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_subctegories_fk` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products_spaces`
@@ -610,8 +610,8 @@ ALTER TABLE `regions`
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `products` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`),
-  ADD CONSTRAINT `users` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `subcategories`
