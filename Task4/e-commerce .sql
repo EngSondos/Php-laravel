@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2022 at 01:45 AM
+-- Generation Time: Jul 24, 2022 at 08:59 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -178,7 +178,7 @@ CREATE TABLE `offers` (
 CREATE TABLE `offers_products` (
   `offers_id` bigint(20) UNSIGNED DEFAULT NULL,
   `products_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `price_after_offer` decimal(8,2) UNSIGNED NOT NULL
+  `price_after_offer` decimal(10,2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -192,7 +192,7 @@ CREATE TABLE `orders` (
   `number` bigint(20) UNSIGNED NOT NULL,
   `payment_method` tinyint(1) NOT NULL COMMENT '0=>Cash 1=>Visa',
   `notes` varchar(255) DEFAULT NULL,
-  `total_price` tinyint(10) NOT NULL,
+  `total_price` bigint(20) NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '0=> Rejected order , 1=>Accepted order , 2=>Delieverd order',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
@@ -207,7 +207,7 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE `orders-products` (
-  `price` decimal(8,0) UNSIGNED NOT NULL,
+  `price` decimal(8,2) UNSIGNED NOT NULL,
   `quantity` bigint(20) UNSIGNED NOT NULL,
   `orders_id` bigint(20) UNSIGNED NOT NULL,
   `products_id` bigint(20) UNSIGNED NOT NULL
