@@ -37,10 +37,7 @@ class ProductController extends Controller
 
     }
     public function edit(Product $product){
-        // $product =DB::table('products')->where("id",$id)->get()->first();
-        if(is_null($product)){
-            return redirect()->route('dashboard.products.index')->with('error',"some THing Wrong");
-        }
+
         $brands =DB::table('brands')->select('id','name_en')->get();
         $subcategories=DB::table('subcategories')->select('id','name_en')->get();
               return view('edit',compact('brands','subcategories','product'));
