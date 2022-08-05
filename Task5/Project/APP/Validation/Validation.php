@@ -110,6 +110,22 @@ public function alertMessage($error){
 
 
 }
+function uniqueInUpdate($id,$table){
+     
+    $model= new Model;
+    $query = "SELECT * FROM ".$table." WHERE id !=?";
+    $stmt = $model->conn->prepare($query);
+    $stmt->bind_param('i',$id);
+    if(!$stmt){
+        return false;
+    }
+    $stmt->execute();
+    $stmt->get_result();
+    if($stmt->num_rows()==1){
+        $this->errors[$this->inputName][__FUNCTION__]=  $this->inputName .' is Aleardy exists' ;
+        
+    }
+}
     /**
      * Set the value of inputValue
      *

@@ -21,8 +21,15 @@ Class User extends Model implements Curd {
     
     
     function update(){
-       
+        $query="UPDATE ". self::TABLE ." SET first_name = ? , last_name = ? , email = ?  WHERE id = ?";
+        $stmt=$this->conn->prepare($query);
+        if(!$stmt){
+            return false;
+        }
+        $stmt->bind_param("sssi",$this->first_name,$this->last_name,$this->email, $this->id);
+        return $stmt->execute();   
     }
+   
     function updatePassword(){
         $query = "UPDATE " .self::TABLE ." SET password = ? WHERE email = ?";
         $stmt=$this->conn->prepare($query);
