@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
@@ -18,7 +19,7 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::prefix('/dashboard')->group(function(){
+Route::prefix('/dashboard')->middleware('verified')->group(function(){
     Route::get('',[DashboardController::class,'index'])->name('dashboard');
     Route::prefix('/product/index')->group(function(){
         Route::get('',[ProductController::class,'index'])->name('dashboard.products.index');
@@ -38,3 +39,7 @@ Route::prefix('/dashboard')->group(function(){
 
 
 
+
+Auth::routes(['register'=>false,'verify'=> true]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
